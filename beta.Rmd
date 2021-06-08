@@ -1,5 +1,5 @@
 ---
-title: "Beta"
+title: "Police"
 author: "Daniel Wang"
 date: "07/06/2021"
 output: html_document
@@ -14,22 +14,23 @@ x <- read_csv("https://raw.githubusercontent.com/Financial-Times/police-miscondu
 
 ```
 
-## R Markdown
+```{r sort data}
+x %>%
+  group_by(officer_id) %>%
+  summarize(total = n()) %>%
+  arrange(desc(total)) %>%
+  slice(1:10) %>%
+  mutate(officer_id_letters = as.character(officer_id)) %>%
+  ggplot(mapping = aes(x = officer_id_letters, y = total)) + 
+  geom_col() +
+  labs(title = "Highest Offences for  Police Officers in Philidephia",
+       subtitle = "Ten officers with most complaints",
+       x = "Officer IDs",
+       y = "Complaints",
+       caption = "Source: Financial Times")+
+  theme_gray()
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-x
+
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
